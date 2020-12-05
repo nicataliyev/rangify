@@ -14,7 +14,7 @@ classifiers = [
 
 setup(
     name='rangify',
-    version='0.0.2',
+    version='0.0.3',
     description='cisco interface rangifier',
     long_description=long_description,
     long_description_content_type='text/markdown',
