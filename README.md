@@ -16,10 +16,12 @@ pip install rangify
 ```python
 from rangify import ranger
 
-# Get ranged interfaces and configs from file
+## It can accept 2 types of inputs.
+
+### Get ranged interfaces and configs from file
 ranger("filename")
 
-# Get ranged interfaces from dictionary of dictionaries 
+### Get ranged interfaces from dictionary of dictionaries 
 ranger(interfaces)
 
 ```
