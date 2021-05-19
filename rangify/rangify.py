@@ -1,7 +1,7 @@
 import helpers
 import sqlite3
 import os
-from pprint import pprint
+
 
 def ranger(input):
     # create a db, pass it to needed files 

@@ -12,13 +12,19 @@ def interface_shortener(interface_name):
     Returns:
         tupple: value1: shortened interface name, value2: interface numbers
     """    
-    regex = re.compile(r"(\w+)(\d.*)")
+    regex = re.compile(r"([A-Za-z]+)(\d+.*)")
     short_dict = {
     "GigabitEthernet": "Gi",
     "TenGigabitEthernet": "Te",
+    "TwentyFiveGigabitEthernet": "TF",
+    "TwentyFiveGigE": "TF",
     "FortyGigabitEthernet": "Fo",
-    "FastEthernet": "Fa"
+    "FastEthernet": "Fa",
+    "Port-channel": "Po",
+    "Loopback": "Lo",
+    "HundredGigE ": "Hu"
     }
+
     int_type, int_no = regex.search(interface_name).groups()
     
     return (short_dict[int_type], int_no) if short_dict.get(int_type) else (int_type, int_no)
@@ -229,3 +235,8 @@ def create_db(conn):
             conn.executescript(sql_query)
         except:
             return "error"
+
+if __name__ == "__main__":
+
+    short_int = interface_shortener("GigabitEthernet1/0")
+    print(short_int)
