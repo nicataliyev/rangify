@@ -27,7 +27,6 @@ def ranger(input):
             with conn:
                 conn.row_factory = sqlite3.Row
                 query = "select * from interfaces where int_name = '{}'".format(interfaces)
-                # print(query)
                 result = conn.execute(query)
                 int_index_list.append(result.fetchone()[0])
         list_of_indexes.append(sorted(int_index_list))
@@ -68,8 +67,8 @@ def ranger(input):
     
     whole_rangable_int = sum(sum(main_sep_list, []), [])
 
-    # print(main_sep_list)
-    # pprint(whole_rangable_int)
+    # ToDo extract repeating pattern for both input types to function 
+    # or do it using decorator
     if type(input) == str and os.path.isfile(input):
         for key in int_no:
             if key not in whole_rangable_int:
@@ -78,7 +77,6 @@ def ranger(input):
         for chunk in main_sep_list:
             # in this chunk interface configs are the same
             for range_div in helpers.cisco_range_packer(chunk):
-                print('interface range ', end='')
                 range_pack = []
                 for sub_chunk in range_div:
                     if len(sub_chunk) > 1:
@@ -87,8 +85,14 @@ def ranger(input):
                             (helpers.db_query(sub_chunk[0], 1, conn) + '-' + str(helpers.db_query(sub_chunk[max], 5, conn))))
                     else:
                         range_pack.append((helpers.db_query(sub_chunk[0], 1, conn)))
-                print(", ".join(range_pack))
-                print(helpers.db_query(chunk[0][0], 6, conn))
+                if len(range_pack) == 1 and "-" not in range_pack[0]:
+                    print('interface ', end='')
+                    print(", ".join(range_pack))
+                    print(helpers.db_query(chunk[0][0], 6, conn))
+                else:
+                    print('interface range ', end='')
+                    print(", ".join(range_pack))
+                    print(helpers.db_query(chunk[0][0], 6, conn))
     elif type(input) == dict:
         result = {}
         for key in int_dict:
@@ -99,12 +103,16 @@ def ranger(input):
             for range_div in helpers.cisco_range_packer(chunk):
                 range_pack = []
                 for sub_chunk in range_div:
+                    # print(sub_chunk)
                     if len(sub_chunk) > 1:
                         max = len(sub_chunk) - 1
                         range_pack.append((helpers.db_query(sub_chunk[0], 1, conn) + '-' + str(helpers.db_query(sub_chunk[max], 5, conn))))
                     else:
                         range_pack.append((helpers.db_query(sub_chunk[0], 1, conn)))
-                result["range " + ", ".join(range_pack)] = int_dict[helpers.db_query(chunk[0][0], 1, conn)]
+                if len(range_pack) == 1 and "-" not in range_pack[0]:
+                    result[", ".join(range_pack)] = int_dict[helpers.db_query(chunk[0][0], 1, conn)]
+                else:
+                    result["range " + ", ".join(range_pack)] = int_dict[helpers.db_query(chunk[0][0], 1, conn)]
         return result
 
 if __name__ == "__main__":
@@ -113,6 +121,27 @@ if __name__ == "__main__":
     #Todo: check if sqlmemory will be working fine in case of flask multiaccess
     #Todo: convert to OOP
 
-    config_file = os.path.join(os.path.dirname(__file__), 'test_config.ios')
+    sample_ints = {
+        "GigabitEthernet0/1": {},
+        "GigabitEthernet0/2": {},
+        "GigabitEthernet0/4": {},
+        "GigabitEthernet0/3": {},
+        "GigabitEthernet1/0/1": {},
+        "GigabitEthernet1/0/2": {},
+        "GigabitEthernet1/0/4": {},
+        "GigabitEthernet3/4/2": {},
+        "GigabitEthernet3/4/3": {},
+        "GigabitEthernet3/5/3": {},
+        "GigabitEthernet3/6/3": {},
+        "GigabitEthernet4/0/3": {},
+        "GigabitEthernet4/1/3": {},
+        "GigabitEthernet4/2/3": {},
+        "GigabitEthernet2/0/4": {},
+        "GigabitEthernet3/1/4": {},
+        "GigabitEthernet3/1/5": {}
+    }
 
-    ranger(config_file)
+
+    config_file = os.path.join(os.path.dirname(__file__), 'test_config.ios')
+    # ranger(config_file)
+    print(ranger(sample_ints))

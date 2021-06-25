@@ -2,6 +2,7 @@ import sqlite3
 import re
 from deepdiff import DeepDiff
 
+from pprint import pprint
 
 def interface_shortener(interface_name):
     """shortens the long version of interface name
@@ -54,17 +55,19 @@ def make_int_dictionary(filename):
                 int_dict[int_name+no] = int_cfg
                 int_no[unique_index] = int_name+no
                 if a:=regex.findall(no):
+                    # we want to make 0 0 0 if gig0/0 is met
+                    # and we want to make 0 0 0 if gig0 is met
+                    # [a[i] if i*-1 <= len(a) else 0 for i in range(-1, -4, -1)][::-1]
                     slot_dict[unique_index] = [int_name] + [a[i] if i*-1 <= len(a) else 0 for i in range(-1, -4, -1)][::-1]
                 else:
                     slot_dict[unique_index] = ('Ethernet', '0', '0', '0')
                 unique_index += 1
                 continue
-            # if not line == '!' and line.startswith(' ') and not line.startswith(' des'):
             if not line == '!' and line.startswith(' '):
                 # line = line.strip()
                 int_cfg.append(line)
                 continue
-            if line.startswith('interface Vlan'): #here is the problem -- > where i detect end of interface configs
+            if line.startswith('interface Vlan'):
                 break
         return int_dict, slot_dict, int_no
 
@@ -89,11 +92,19 @@ def load_ints(interfaces):
         int_name, no = interface_shortener(interface)
         int_dict[int_name+no] = interfaces[interface]
         if a:=regex.findall(no):
-            db_info.append([unique_index, int_name+no, int_name] + [a[i] if i*-1 <= len(a) else 0 for i in range(-1, -4, -1)][::-1] + ["config"])
+            # we want to make 0 0 0 if gig0/0 is met
+            # and we want to make 0 0 0 if gig0 is met
+            # [a[i] if i*-1 <= len(a) else 0 for i in range(-1, -4, -1)][::-1]
+            db_info.append([int_name+no, int_name] + [a[i] if i*-1 <= len(a) else 0 for i in range(-1, -4, -1)][::-1] + ["config"])
         else:
-            db_info.append([unique_index, int_name+no, 'Ethernet', '0', '0', '0', "config"])
+            db_info.append([int_name+no, 'Ethernet', '0', '0', '0', "config"])
+    # Todo: this part needs to be refactored
+    # Todo: because inserting to the beginning is slow
+    sorted_db_info = sorted(db_info, key=lambda x: (int(x[2]), int(x[3]), int(x[4])))
+    for info in sorted_db_info:
+        info.insert(0, unique_index)
         unique_index += 1
-    return int_dict, db_info
+    return int_dict, sorted_db_info
 
 
 def create_lists_of_tupples(int_dict, slot_dict, int_no):
@@ -187,7 +198,6 @@ def write_to_db(int_no_list, conn):
         query = "DELETE from interfaces"
         conn.execute(query, )
         for rows in int_no_list:
-            # print(rows)
             try:
                 with conn:
                     query = "INSERT into interfaces values (?, ?, ?, ?, ?, ?, ?)"
