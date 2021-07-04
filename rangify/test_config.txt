@@ -1,0 +1,184 @@
+!
+interface GigabitEthernet1/0/1
+ description generic
+ switchport access vlan 150
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/2
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/3
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/4
+ description generic
+ switchport access vlan 150
+ switchport mode access
+ speed auto 10 100
+!
+interface GigabitEthernet1/0/5
+ description generic
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/6
+ description generic
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/7
+ description generic
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/8
+ description generic
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/9
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/10
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/11
+ description generic
+ mls qos trust cos
+ switchport access vlan 150
+ switchport mode access
+!
+interface GigabitEthernet1/0/12
+ description generic
+ mls qos trust cos
+ switchport access vlan 150
+ switchport mode access
+!
+interface GigabitEthernet1/0/13
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/14
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/15
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/16
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/17
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/18
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/19
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/20
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/21
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/22
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/23
+ description generic
+ mls qos trust cos
+ switchport access vlan 30
+ switchport mode access
+!
+interface GigabitEthernet1/0/24
+ description generic
+ mls qos trust cos
+ switchport access vlan 150
+ switchport mode access
+!
+interface GigabitEthernet1/0/25
+ shutdown
+!
+interface GigabitEthernet1/0/26
+ shutdown
+!
+interface GigabitEthernet1/0/27
+ shutdown
+!
+interface GigabitEthernet1/0/28
+ description generic
+ switchport trunk native vlan 100
+ switchport trunk allowed vlan 2-3
+ switchport mode trunk
+!
+interface GigabitEthernet2/0/1
+ description generic
+ switchport mode trunk
+!
+interface GigabitEthernet2/2/2
+ description generic
+ switchport mode trunk
+!
+interface GigabitEthernet2/3/3
+ description generic
+ switchport mode trunk
+!
+interface GigabitEthernet2/0/4
+ description generic
+ switchport mode trunk
+!
+interface GigabitEthernet3/0/1
+ description generic
+ switchport mode trunk
+!
+interface GigabitEthernet2/1/1
+ description generic
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
