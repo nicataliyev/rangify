@@ -74,6 +74,7 @@ def ranger(input):
             if key not in whole_rangable_int:
                 print('interface ' + helpers.db_query(key, 1, conn))
                 print(helpers.db_query(key, 6, conn))
+                print("!")
         for chunk in main_sep_list:
             # in this chunk interface configs are the same
             for range_div in helpers.cisco_range_packer(chunk):
@@ -89,10 +90,12 @@ def ranger(input):
                     print('interface ', end='')
                     print(", ".join(range_pack))
                     print(helpers.db_query(chunk[0][0], 6, conn))
+                    print("!")
                 else:
                     print('interface range ', end='')
                     print(", ".join(range_pack))
                     print(helpers.db_query(chunk[0][0], 6, conn))
+                    print("!")
     elif type(input) == dict:
         result = {}
         for key in int_dict:
@@ -128,20 +131,19 @@ if __name__ == "__main__":
         "GigabitEthernet0/3": {},
         "GigabitEthernet1/0/1": {},
         "GigabitEthernet1/0/2": {},
-        "GigabitEthernet1/0/4": {},
-        "GigabitEthernet3/4/2": {},
-        "GigabitEthernet3/4/3": {},
-        "GigabitEthernet3/5/3": {},
-        "GigabitEthernet3/6/3": {},
+        "GigabitEthernet1/0/4": {"mode": "access"},
+        "GigabitEthernet3/4/2": {"mode": "access"},
+        "GigabitEthernet3/4/3": {"mode": "access"},
+        "GigabitEthernet3/5/3": {"mode": "trunk"},
+        "GigabitEthernet3/6/3": {"mode": "trunk"},
         "GigabitEthernet4/0/3": {},
-        "GigabitEthernet4/1/3": {},
+        "GigabitEthernet4/1/3": {"mode": "trunk"},
         "GigabitEthernet4/2/3": {},
         "GigabitEthernet2/0/4": {},
         "GigabitEthernet3/1/4": {},
         "GigabitEthernet3/1/5": {}
     }
 
-
-    config_file = os.path.join(os.path.dirname(__file__), 'test_config.ios')
-    # ranger(config_file)
-    print(ranger(sample_ints))
+    config_file = os.path.join(os.path.dirname(__file__), 'test_config.txt')
+    ranger(config_file)
+    # print(ranger(sample_ints))
